@@ -11,9 +11,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 public class GdxGame extends Game {
     private SpriteBatch batch;
     private BitmapFont font;
+    private RunRecords records;
 
     @Override
     public void create() {
+        records = new RunRecords(Gdx.app.getPreferences(RunRecords.PREFERENCES_NAME));
         batch = new SpriteBatch();
 
         var generator = new FreeTypeFontGenerator(Gdx.files.internal("CherryCreamSoda-Regular.ttf"));
@@ -29,6 +31,7 @@ public class GdxGame extends Game {
     @Override
     public void dispose() {
         super.dispose();
+        if (screen != null) screen.dispose();
         batch.dispose();
         font.dispose();
     }
@@ -41,4 +44,6 @@ public class GdxGame extends Game {
     public BitmapFont getFont(){
         return font;
     }
+
+    public RunRecords getRecords() { return records; }
 }

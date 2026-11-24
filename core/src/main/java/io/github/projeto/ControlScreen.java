@@ -41,7 +41,7 @@ public class ControlScreen extends ScreenAdapter {
         ScreenUtils.clear(Color.BLACK);
 
         float centerX = viewport.getWorldWidth() / 2;
-        float y = viewport.getWorldHeight() / 2 + 100;
+        float y = viewport.getWorldHeight() / 2 + 180;
 
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
@@ -55,12 +55,31 @@ public class ControlScreen extends ScreenAdapter {
         font.draw(batch, layout, centerX - layout.width / 2, y);
         y-=40;
 
+        layout.setText(font, "Q - Dash");
+        font.draw(batch, layout, centerX - layout.width / 2, y);
+        y -= 40;
+
+        layout.setText(font, "E - Curar no banco (10 pontos, recarga de 20s)");
+        font.draw(batch, layout, centerX - layout.width / 2, y);
+        y -= 40;
+
+        layout.setText(font, "Ataque automático - Slimes e baús próximos");
+        font.draw(batch, layout, centerX - layout.width / 2, y);
+        y -= 40;
+
         layout.setText(font, "R - Reiniciar (quando morto)");
         font.draw(batch,layout, centerX - layout.width / 2, y);
         y-=70;
 
         layout.setText(font, "Aperte ESPAÇO para iniciar. ");
         font.draw(batch, layout, centerX - layout.width / 2,y);
+
+        y -= 60;
+        layout.setText(font, "Recorde de score: " + game.getRecords().getBestScore());
+        font.draw(batch, layout, centerX - layout.width / 2, y);
+        y -= 36;
+        layout.setText(font, "Melhor tempo: " + game.getRecords().getBestTimeDisplay());
+        font.draw(batch, layout, centerX - layout.width / 2, y);
 
         batch.end();
     }

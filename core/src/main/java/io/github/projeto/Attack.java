@@ -11,18 +11,28 @@ public class Attack extends GameObject{
 
     private float lifeSpan = DURATION;
     private final Animation<Texture> animation;
+    private final float originX,originY;
 
     public Attack(Vector2 position, Vector2 direction, Animation<Texture> animation){
+        this(position,direction,animation,null);
+    }
+    public Attack(Vector2 position,Vector2 direction,Animation<Texture> animation,com.badlogic.gdx.math.Rectangle source){
         float spawnX = position.x - SIZE / 2 + direction.x * SIZE * 0.75f;
         float spawnY = position.y - SIZE / 2 + direction.y * SIZE * 0.75f;
         super(spawnX, spawnY, SIZE, SIZE);
         this.animation = animation;
+        originX=source==null?position.x:source.x+source.width/2f;
+        originY=source==null?position.y:source.y+Math.min(.05f,source.height/2f);
     }
 
 
     @Override
     void update(float deltaTime){
         this.lifeSpan -= deltaTime;
+    }
+
+    public boolean canHit(GameObject target) {
+        return !isDone() && overlaps(target) && CombatGeometry.canReach(originX,originY,target.rect);
     }
 
     public boolean isDone(){

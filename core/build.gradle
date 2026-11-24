@@ -12,3 +12,17 @@ dependencies {
 jar {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+// Standalone Java checks require no testing framework or graphics context.
+sourceSets {
+  worldCheck {
+    compileClasspath += sourceSets.main.output + configurations.runtimeClasspath
+    runtimeClasspath += sourceSets.main.output + configurations.runtimeClasspath
+  }
+}
+tasks.register('checkWorldLayout', JavaExec) {
+  dependsOn worldCheckClasses
+  classpath = sourceSets.worldCheck.runtimeClasspath
+  mainClass = 'io.github.projeto.WorldLayoutTest'
+}
+check.dependsOn checkWorldLayout
