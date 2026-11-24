@@ -1,14 +1,34 @@
 package io.github.projeto;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Disposable;
 
-/** Centered results text, with no background, frame or decorative UI. */
-public final class GameOverPanel {
+/** Centered results text over a subtly dimmed world, without a decorative panel. */
+public final class GameOverPanel implements Disposable {
+    private final Texture pixel;
     private final GlyphLayout label = new GlyphLayout();
     private final Color savedFontColor = new Color();
+
+    public GameOverPanel() {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        pixel = new Texture(pixmap);
+        pixmap.dispose();
+    }
+
+    /** Draw before the HUD so only the world is darkened. */
+    public void drawDimBackground(Batch batch, float width, float height) {
+        float packedColor = batch.getPackedColor();
+        batch.setColor(0f, 0f, 0f, .5f);
+        batch.draw(pixel, 0f, 0f, width, height);
+        batch.setPackedColor(packedColor);
+    }
 
     public void draw(Batch batch, BitmapFont font, float width, float height,
                      int score, String time, RunRecords records, boolean newScoreRecord) {
@@ -44,4 +64,5 @@ public final class GameOverPanel {
         label.setText(font, text);
         font.draw(batch, label, centerX - label.width / 2f, top);
     }
+    @Override public void dispose() { pixel.dispose(); }
 }

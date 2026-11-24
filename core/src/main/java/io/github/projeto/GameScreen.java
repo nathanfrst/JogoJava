@@ -248,6 +248,9 @@ public class GameScreen extends ScreenAdapter{
         uiViewport.apply();
         batch.setProjectionMatrix(uiViewport.getCamera().combined);
         batch.begin();
+        if (player.isDead()) {
+            gameOverPanel.drawDimBackground(batch, uiViewport.getWorldWidth(), uiViewport.getWorldHeight());
+        }
         hud.drawHealth(batch, player.getHealth(), player.getMaxHealth(),
             20f, uiViewport.getWorldHeight() - 88f,
             Math.min(216f, Math.max(48f, uiViewport.getWorldWidth() - 40f)), 36f);
@@ -316,6 +319,7 @@ public class GameScreen extends ScreenAdapter{
         ruins.dispose();
         playerAnimations.dispose();
         hud.dispose();
+        gameOverPanel.dispose();
         enemyTexture.dispose();
         attackTexture.forEach(Texture::dispose);
         music.dispose();
